@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flap, Die, Retry | Ahnaf Sufi Portfolio</title>
+    <style>
+      /* --- CSS VARIABLES & RESET --- */
+      :root {
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --text-main: #e0e0e0;
+        --text-muted: #a0a0a0;
+        --accent: #00b894; /* Unity-ish Green */
+        --accent-hover: #55efc4;
+        --danger: #ff7675;
+        --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        --timeline-line-color: #444;
+        --rail-height: 4px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-main);
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      ul {
+        list-style: none;
+      }
+
+      /* --- NAVIGATION --- */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(18, 18, 18, 0.95);
+        border-bottom: 1px solid #333;
+        padding: 1rem 2rem;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        color: var(--text-main);
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+
+      /* --- HERO SECTION --- */
+      #home {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("imgs/items.png");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        background: -webkit-linear-gradient(45deg, var(--accent), #fff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin-bottom: 2rem;
+      }
+
+      .btn {
+        padding: 0.8rem 2rem;
+        background-color: var(--accent);
+        color: #000;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: transform 0.2s;
+      }
+
+      .btn:hover {
+        transform: scale(1.05);
+        background-color: var(--accent-hover);
+      }
+
+      /* --- SECTIONS GENERAL --- */
+      section {
+        padding: 5rem 2rem;
+        max-width: 1400px; /* Wider for timeline */
+        margin: 0 auto;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        text-align: center;
+        border-bottom: 2px solid var(--accent);
+        display: inline-block;
+        padding-bottom: 0.5rem;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* --- CENTERED RAIL TIMELINE --- */
+      .timeline-wrapper {
+        position: relative;
+        min-height: 850px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* 1. Evidence Display (Top) - Floating Style */
+      .timeline-display {
+        width: 90%;
+        max-width: 1000px;
+        background: var(--card-bg);
+        border: 1px solid #333;
+        border-radius: 15px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 20px;
+        position: relative;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        transition: opacity 0.2s ease;
+        z-index: 2;
+        /* FIXED HEIGHT to prevent jumping */
+        height: 550px;
+      }
+
+      /* Layout for Content vs Media */
+      .display-content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr; /* Standard layout: Media Left, Text Right */
+        gap: 2rem;
+        width: 100%;
+        height: 100%; /* Fill the fixed height container */
+      }
+
+      /* Special Grid for Double Images */
+      .media-grid-double {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        height: 100%; /* Fill allocated space */
+        min-height: 300px;
+      }
+
+      /* The Pointer Triangle */
+      .timeline-display::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 15px 15px 0;
+        border-style: solid;
+        border-color: var(--card-bg) transparent transparent transparent;
+        z-index: 1;
+      }
+
+      .timeline-media {
+        background: #000;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 100%; /* Fill container */
+        border: 1px solid #333;
+        cursor: pointer; /* Indicate clickable */
+        position: relative; /* For the click hint overlay */
+      }
+
+      .timeline-media img,
+      .timeline-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Fill the box */
+        background: #000;
+        transition: transform 0.3s ease; /* Smooth zoom on hover */
+      }
+
+      .timeline-media:hover img {
+        transform: scale(1.03); /* Grow slightly on hover */
+      }
+
+      /* --- CLICK HINT OVERLAY --- */
+      .click-hint {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        pointer-events: none; /* Let clicks pass through to image */
+        opacity: 0;
+        transition: opacity 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .timeline-media:hover .click-hint {
+        opacity: 1;
+      }
+
+      .timeline-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .timeline-content h3 {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+
+      .timeline-date-display {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .timeline-tag {
+        align-self: flex-start;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+      }
+
+      .tag-broadening {
+        background-color: #0984e3;
+        color: white;
+      }
+      .tag-deepening {
+        background-color: #6c5ce7;
+        color: white;
+      }
+      .tag-critical {
+        background-color: #d63031;
+        color: white;
+      }
+      .tag-monitor {
+        background-color: #00b894;
+        color: black;
+      }
+
+      /* 2. The Rail (Bottom/Center) */
+      .timeline-nav-container {
+        width: 100%;
+        position: relative;
+        /* INCREASED: Padding top to prevent clipping of scaled nodes */
+        padding-top: 30px;
+        padding-bottom: 20px;
+      }
+
+      .timeline-line {
+        position: absolute;
+        /* ADJUSTED: padding-top (30) + nav-padding (80) + half-dot (10) - half-line (2) = 118px */
+        top: 118px;
+        left: 0;
+        width: 100%;
+        height: var(--rail-height);
+        background: var(--timeline-line-color);
+        z-index: 0;
+      }
+
+      .timeline-nav {
+        display: flex;
+        gap: 15vw;
+        /* INCREASED Top padding to 80px inside scroll area to stop clipping */
+        padding: 80px calc(50% - 20px) 20px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        position: relative;
+        z-index: 1;
+        align-items: flex-start;
+        scroll-snap-type: x mandatory;
+      }
+
+      .timeline-node {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+        opacity: 0.3;
+        scroll-snap-align: center;
+        padding-top: 0;
+      }
+
+      .node-dot {
+        width: 20px;
+        height: 20px;
+        background: var(--card-bg);
+        border: 2px solid var(--text-muted);
+        border-radius: 50%;
+        margin-bottom: 15px;
+        transform: scale(0.8);
+        transition: all 0.3s;
+        position: relative;
+        z-index: 2;
+      }
+
+      .node-label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      /* Active Node State */
+      .timeline-node.active {
+        opacity: 1;
+      }
+
+      .timeline-node.active .node-dot {
+        background: var(--accent);
+        border-color: #fff;
+        box-shadow: 0 0 25px var(--accent);
+        transform: scale(1.4); /* Pop the DOT up */
+      }
+
+      .timeline-node.active .node-label {
+        color: var(--accent);
+        opacity: 1;
+      }
+
+      /* 3. Arrows Below Timeline */
+      .arrow-controls {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+        opacity: 0.6;
+        transition: opacity 0.3s;
+      }
+
+      .arrow-controls:hover {
+        opacity: 1;
+      }
+
+      .arrow-btn {
+        background: transparent;
+        color: var(--text-muted);
+        border: 1px solid var(--text-muted);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .arrow-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: scale(1.1);
+      }
+
+      /* --- MODAL (IMAGE POPUP) --- */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 2000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      .modal-content {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 3rem;
+        color: #fff;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        transition: color 0.3s;
+      }
+
+      .close-modal:hover {
+        color: var(--accent);
+      }
+
+      /* --- REFLECTIONS (TABS) --- */
+      .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        background: transparent;
+        border: 2px solid var(--accent);
+        color: var(--text-main);
+        padding: 0.8rem 2rem;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+        border-radius: 30px;
+      }
+
+      .tab-btn.active,
+      .tab-btn:hover {
+        background: var(--accent);
+        color: #000;
+      }
+
+      .tab-content {
+        background: var(--card-bg);
+        padding: 3rem;
+        border-radius: 15px;
+        display: none;
+        animation: fadeIn 0.5s;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .ppmr-header {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--accent);
+      }
+
+      /* --- CONTRACT & FOOTER --- */
+      .contract-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        background: var(--card-bg);
+        padding: 2rem;
+        border-radius: 10px;
+        border: 1px solid #333;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem;
+        background: #000;
+        color: var(--text-muted);
+        margin-top: 4rem;
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        .timeline-display {
+          height: auto; /* Allow auto height on mobile */
+        }
+        .display-content-wrapper {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        .media-grid-double {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+        .timeline-media {
+          height: 250px;
+        }
+        .hero-title {
+          font-size: 2.5rem;
+        }
+        .nav-links {
+          display: none;
+        }
+        .timeline-nav {
+          gap: 20vw;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- IMAGE MODAL -->
+    <div id="image-modal" class="modal-overlay" onclick="closeModal()">
+      <button class="close-modal">&times;</button>
+      <img id="modal-img" class="modal-content" src="" alt="Full View" />
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+      <div class="logo">Ahnaf.Dev</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#timeline">Evidence Log</a>
+        <a href="#reflection">Reflections</a>
+        <a href="#contract">Contract</a>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home">
+      <h1 class="hero-title">Flap, Die, Retry</h1>
+      <p class="hero-subtitle">
+        A journey into Game Development with Unity & C#.<br />By Ahnaf Sufi
+        Putera Suratman (2401541D)
+      </p>
+      <a href="#timeline" class="btn">View Evidence</a>
+    </section>
+
+    <!-- TIMELINE SECTION (Evidence of Learning) -->
+    <section id="timeline">
+      <h2 class="section-title">Development Log (Evidence)</h2>
+
+      <div class="timeline-wrapper">
+        <!-- 1. The Evidence Card (Centered Top) -->
+        <div class="timeline-display" id="display-area">
+          <!-- Content injected via JS -->
+        </div>
+
+        <!-- 2. The Rail (Centered Bottom) -->
+        <div class="timeline-nav-container">
+          <div class="timeline-line"></div>
+
+          <!-- Scrollable Nodes -->
+          <div class="timeline-nav" id="timeline-nav">
+            <!-- Nodes injected via JS -->
+          </div>
+        </div>
+
+        <!-- 3. Arrows (Subtle & Below) -->
+        <div class="arrow-controls">
+          <button class="arrow-btn" onclick="prevSlide()">&#10094;</button>
+          <button class="arrow-btn" onclick="nextSlide()">&#10095;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFLECTION SECTION (PPMR) -->
+    <section id="reflection">
+      <h2 class="section-title">Project Reflections (PPMR)</h2>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('plan')">PLAN</button>
+        <button class="tab-btn" onclick="openTab('perform')">PERFORM</button>
+        <button class="tab-btn" onclick="openTab('monitor')">MONITOR</button>
+        <button class="tab-btn" onclick="openTab('reflect')">REFLECT</button>
+      </div>
+
+      <div id="plan" class="tab-content active">
+        <h3 class="ppmr-header">PLAN: The Ambition</h3>
+        <p>
+          <strong>Initial Goal:</strong> To design and develop a playable game
+          from scratch using Unity scripting.
+        </p>
+        <br />
+        <p>
+          Initially, I rated my <strong>Innovation</strong> attribute at a 2. I
+          didn't know where to start, so when my facilitator mentioned Flappy
+          Bird, I decided to follow a basic tutorial to build a foundation.
+          However, I realized my art skills were limited, so I had a choice:
+          make a bad-looking original game or stick to the tutorial's aesthetic
+          but innovate on gameplay. I chose the latter, pivoting to an "Arcade
+          Evolution" concept (randomized rounds, shops) to make the game
+          replayable and unique every time.
+        </p>
+      </div>
+
+      <div id="perform" class="tab-content">
+        <h3 class="ppmr-header">PERFORM: The Struggle</h3>
+        <p>
+          <strong>Challenge:</strong> Re-architecting a simple tutorial into a
+          complex system.
+        </p>
+        <br />
+        <p>
+          Building on top of the existing tutorial code was harder than
+          expected. The basic code just "paused" the game, which wasn't enough
+          for a Shop system. I realized I couldn't just patch it; I had to
+          <strong>recreate the structure</strong> entirely to accommodate Game
+          States (Playing, Shop, GameOver) and variable Stats (Speed, Gap Size).
+          This forced me to leverage my
+          <strong>Critical Thinking</strong> attribute to decouple the logic and
+          make it scalable.
+        </p>
+      </div>
+
+      <div id="monitor" class="tab-content">
+        <h3 class="ppmr-header">MONITOR: The Feedback Loop</h3>
+        <p>
+          <strong>Consultation:</strong> Peer Review with Ashveen Dev Menon
+          (Week 12).
+        </p>
+        <br />
+        <p>
+          I monitored my progress by showing a beta build to Ashveen. He pointed
+          out that the game ramped up too fast—the randomized difficulty scaling
+          made it unfairly difficult by Round 3.
+        </p>
+        <p>
+          <strong>Action Taken:</strong> I implemented a
+          <strong>Heart System</strong> (3 lives) to make it more forgiving and
+          used my <strong>StatDisplay</strong> debug tool to fine-tune the
+          difficulty multiplier from 1.5x to 1.1x per round.
+        </p>
+      </div>
+
+      <div id="reflect" class="tab-content">
+        <h3 class="ppmr-header">REFLECT: The Growth</h3>
+        <p><strong>Outcome:</strong> Critical Thinking 4 &rarr; 5.</p>
+        <br />
+        <p>
+          Looking back, the pivot was the most valuable part of the journey. By
+          choosing to "innovate" on mechanics rather than art, I learned far
+          more about Game Architecture than I would have with a simple clone. I
+          successfully moved from "copying a tutorial" to "engineering a
+          system," satisfying my goal to deepen my technical understanding of
+          game development.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTRACT & RESOURCES -->
+    <section id="contract">
+      <h2 class="section-title">Contract & Resources</h2>
+      <div class="contract-grid">
+        <div class="card">
+          <h3>My Learning Contract</h3>
+          <p>
+            <strong>Goal:</strong> Develop Arcade-Style Flappy Bird Evolution.
+          </p>
+          <p>
+            <strong>Attributes:</strong> Inquisitive, Critical Thinking,
+            Innovative.
+          </p>
+          <br />
+          <a
+            href="2401541D_Ahnaf_Sufi_Learning_Contract.pdf"
+            class="btn"
+            style="font-size: 0.8rem"
+            target="_blank"
+            >View Contract</a
+          >
+        </div>
+        <div class="card">
+          <h3>Resources Consulted</h3>
+          <ul
+            style="
+              list-style: disc;
+              margin-left: 1.5rem;
+              margin-top: 1rem;
+              color: var(--text-muted);
+            "
+          >
+            <li>Unity Official Documentation (Scripting API)</li>
+            <li>
+              <a
+                href="https://www.youtube.com/watch?v=ihvBiJ1oC9U"
+                target="_blank"
+                style="text-decoration: underline; color: var(--accent)"
+                >Zigurous: How to make Flappy Bird in Unity</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com/watch?v=XtQMytORBmM"
+                target="_blank"
+                style="text-decoration: underline; color: var(--accent)"
+                >GMTK: The Unity Tutorial For Complete Beginners</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com/watch?v=7jxS8HIny3Q"
+                target="_blank"
+                style="text-decoration: underline; color: var(--accent)"
+                >Code Monkey: Scriptable Objects Guide</a
+              >
+            </li>
+            <li>Peer Consultation: Ashveen Dev Menon</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Ahnaf Sufi Putera Suratman. Admin No: 2401541D.</p>
+      <p>GTP1302 Guided Learning Project.</p>
+    </footer>
+
+    <script>
+      // --- TIMELINE DATA (UPDATED WITH YOUR IMAGES) ---
+      const timelineData = [
+        {
+          id: 1,
+          date: "Week 1-2",
+          title: "Project Inception",
+          tag: "Planning",
+          tagClass: "tag-monitor",
+          desc: `
+                    <strong>The Starting Point:</strong> I initially felt overwhelmed and unsure where to start, so I decided to follow a standard "Flappy Bird" tutorial to build a foundation.<br><br>
+                    <strong>The Pivot:</strong> While the tutorial was helpful, I realized a simple clone wouldn't satisfy my <em>Innovation</em> goal (Rated 2/5). I pivoted to an "Arcade Evolution" concept with randomized progression and upgrades, knowing this would require eventually rewriting the core architecture.
+                `,
+          img: "imgs/wk1.png",
+          imgPos: "center",
+        },
+        {
+          id: 2,
+          date: "Week 3",
+          title: "Hello World (Unity)",
+          tag: "Broadening",
+          tagClass: "tag-broadening",
+          desc: `
+                    <strong>First Steps:</strong> I started by familiarizing myself with the Unity Interface. My first script was a basic <code>Player.cs</code> that simply moved a sprite.<br><br>
+                    <strong>Evidence:</strong> I learned about the <code>Transform</code> component and how <code>Time.deltaTime</code> is crucial for frame-rate independent movement. This broadened my understanding of the Game Loop.
+                `,
+          img: "imgs/wk3_unity.png",
+          imgPos: "center",
+        },
+        {
+          id: 3,
+          date: "Week 5",
+          title: "Physics & Parallax",
+          tag: "Broadening",
+          tagClass: "tag-broadening",
+          desc: `
+                    <strong>Mechanics:</strong> I implemented the core physics using <code>Rigidbody2D</code> and created the infinite scrolling effect based on the tutorial.<br><br>
+                    <strong>The Logic:</strong> My code snippet (Right) uses texture offset mapping rather than moving physical objects. This was a key optimization technique I learned to keep performance high on mobile devices.
+                `,
+          img: "imgs/wk5_tutorial.png",
+          img2: "imgs/wk5_code.png",
+        },
+        {
+          id: 4,
+          date: "Week 7",
+          title: "The 'Fall' Bug",
+          tag: "Critical Thinking",
+          tagClass: "tag-critical",
+          desc: `
+                    <strong>The Failure:</strong> My player kept falling through the floor despite having a Collider.<br><br>
+                    <strong>The Fix:</strong> I used my <em>Critical Thinking</em> attribute to debug the Inspector. I realized I had set the Floor Collider to "Is Trigger", which ghosted the physics interactions. Correcting this to a solid collision taught me the vital difference between <code>OnCollisionEnter</code> and <code>OnTriggerEnter</code>.
+                `,
+          img: "imgs/wk7_tag.png",
+          imgPos: "right", // Aligns to Right to show Inspector
+        },
+        {
+          id: 5,
+          date: "Week 9",
+          title: "Architecture Pivot",
+          tag: "Deepening",
+          tagClass: "tag-deepening",
+          desc: `
+                    <strong>The Limit of Tutorials:</strong> The basic tutorial simply paused the game with <code>Time.timeScale = 0</code>. This wasn't enough for my advanced features (Shops, Upgrades).<br><br>
+                    <strong>The Re-Write:</strong> I completely re-engineered the <code>GameManager</code>. I implemented a proper <strong>State Machine</strong> (Playing, Shop, GameOver) and exposed variables like Speed and Gap Size as modifiable stats, paving the way for the upgrade system.
+                `,
+          img: "imgs/wk9_gamestate.png",
+          img2: "imgs/wk9_gamestat.png",
+        },
+        {
+          id: 6,
+          date: "Week 11",
+          title: "Shop & Item Logic",
+          tag: "Deepening",
+          tagClass: "tag-deepening",
+          desc: `
+                    <strong>Data-Driven Design:</strong> I implemented the Shop System using <strong>ScriptableObjects</strong>. This allows me to create new items (like "Speed Down" or "Gap Up") just by creating assets in the project folder, without writing new code for each item.<br><br>
+                    <strong>Evidence:</strong> The screenshot shows the <code>ShopItem</code> assets and the dynamic UI that populates based on what is available.
+                `,
+          img: "imgs/items.png",
+          imgPos: "center",
+        },
+        {
+          id: 7,
+          date: "Week 12-13",
+          title: "Balancing & Feedback",
+          tag: "Refining",
+          tagClass: "tag-monitor",
+          desc: `
+                    <strong>Consultation:</strong> I consulted my peer, Ashveen, regarding the difficulty curve. He noted the game ramped up too fast.<br><br>
+                    <strong>Action:</strong> I implemented a <code>HeartDisplay</code> system (3 Lives) to make it more forgiving and used my <code>StatDisplay</code> debug tool (Right) to tune the difficulty multiplier from 1.5x to 1.1x per round based on real-time data.
+                `,
+          img: "imgs/wk11_health.png",
+          imgPos: "left",
+          img2: "imgs/stats.png",
+          img2Pos: "left",
+        },
+      ];
+
+      // --- TIMELINE LOGIC ---
+      let currentIndex = 0;
+      let isAutoScrolling = false;
+      const displayArea = document.getElementById("display-area");
+      const navContainer = document.getElementById("timeline-nav");
+
+      function renderTimeline() {
+        // Render Nav Nodes
+        navContainer.innerHTML = timelineData
+          .map(
+            (item, index) => `
+                <div class="timeline-node ${
+                  index === 0 ? "active" : ""
+                }" onclick="clickNode(${index})" id="node-${index}">
+                    <div class="node-dot"></div>
+                    <div class="node-label">${item.date}</div>
+                </div>
+            `
+          )
+          .join("");
+
+        // Load first item content
+        updateContent(0);
+      }
+
+      // Triggered by CLICK (Manual Selection)
+      function clickNode(index) {
+        isAutoScrolling = true;
+        currentIndex = index;
+
+        // 1. Update Content
+        updateContent(index);
+
+        // 2. Scroll Rail to Center
+        const node = document.getElementById(`node-${index}`);
+        // Simplified math for centering
+        const scrollPosition =
+          node.offsetLeft - navContainer.clientWidth / 2 + node.clientWidth / 2;
+
+        navContainer.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+
+        // Reset flag after scroll finishes (approx 500ms)
+        setTimeout(() => {
+          isAutoScrolling = false;
+        }, 600);
+      }
+
+      // Triggered by SCROLL (Auto Detection)
+      navContainer.addEventListener("scroll", () => {
+        if (isAutoScrolling) return;
+
+        const containerCenter =
+          navContainer.scrollLeft + navContainer.clientWidth / 2;
+        let closestIndex = -1;
+        let closestDist = Infinity;
+
+        // Find node closest to center
+        timelineData.forEach((_, index) => {
+          const node = document.getElementById(`node-${index}`);
+          const nodeCenter = node.offsetLeft + node.clientWidth / 2;
+          const dist = Math.abs(containerCenter - nodeCenter);
+
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestIndex = index;
+          }
+        });
+
+        // Update only if index changed and is "close enough" (snap feel)
+        if (closestIndex !== -1 && closestIndex !== currentIndex) {
+          currentIndex = closestIndex;
+          updateContent(currentIndex);
+        }
+      });
+
+      // Updates visuals (Classes + HTML)
+      function updateContent(index) {
+        const data = timelineData[index];
+
+        // Highlight Node
+        const nodes = document.querySelectorAll(".timeline-node");
+        nodes.forEach((node) => node.classList.remove("active"));
+        if (nodes[index]) nodes[index].classList.add("active");
+
+        // --- MEDIA HTML GENERATION ---
+        let mediaHtml = "";
+
+        // Use custom object-position if provided, default to center
+        const pos1 = data.imgPos || "center";
+
+        if (data.img2) {
+          const pos2 = data.img2Pos || "center";
+          mediaHtml = `
+                    <div class="media-grid-double">
+                        <div class="timeline-media">
+                            <img src="${data.img}" style="object-position: ${pos1};" alt="${data.title} A" onclick="openModal(this.src)">
+                            <div class="click-hint">Click to Expand</div>
+                        </div>
+                        <div class="timeline-media">
+                            <img src="${data.img2}" style="object-position: ${pos2};" alt="${data.title} B" onclick="openModal(this.src)">
+                            <div class="click-hint">Click to Expand</div>
+                        </div>
+                    </div>
+                `;
+        } else {
+          mediaHtml = `
+                    <div class="timeline-media">
+                        <img src="${data.img}" style="object-position: ${pos1};" alt="${data.title}" onclick="openModal(this.src)">
+                        <div class="click-hint">Click to Expand</div>
+                    </div>
+                `;
+        }
+
+        // Swap Display with content wrapper
+        displayArea.innerHTML = `
+                <div class="display-content-wrapper">
+                    ${mediaHtml}
+                    <div class="timeline-content">
+                        <span class="timeline-tag ${data.tagClass}">${data.tag}</span>
+                        <span class="timeline-date-display">${data.date}</span>
+                        <h3>${data.title}</h3>
+                        <p>${data.desc}</p>
+                    </div>
+                </div>
+            `;
+      }
+
+      function nextSlide() {
+        let newIndex = currentIndex + 1;
+        if (newIndex >= timelineData.length) newIndex = 0;
+        clickNode(newIndex);
+      }
+
+      function prevSlide() {
+        let newIndex = currentIndex - 1;
+        if (newIndex < 0) newIndex = timelineData.length - 1;
+        clickNode(newIndex);
+      }
+
+      // --- TAB LOGIC ---
+      function openTab(tabName) {
+        const contents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < contents.length; i++) {
+          contents[i].classList.remove("active");
+        }
+        const buttons = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < buttons.length; i++) {
+          buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        event.currentTarget.classList.add("active");
+      }
+
+      // --- MODAL LOGIC ---
+      function openModal(imgSrc) {
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        modal.style.display = "flex"; // Use flex to center content
+        modalImg.src = imgSrc;
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("image-modal");
+        modal.style.display = "none";
+      }
+
+      // Initialize
+      renderTimeline();
+    </script>
+  </body>
+</html>
