@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flap, Die, Retry | Ahnaf Sufi Portfolio</title>
     <style>
-      /* --- CSS VARIABLES & RESET --- */
       :root {
         --bg-color: #121212;
         --card-bg: #1e1e1e;
         --text-main: #e0e0e0;
         --text-muted: #a0a0a0;
-        --accent: #00b894; /* Unity-ish Green */
+        --accent: #00b894;
         --accent-hover: #55efc4;
         --danger: #ff7675;
         --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -41,7 +40,6 @@
         list-style: none;
       }
 
-      /* --- NAVIGATION --- */
       nav {
         position: fixed;
         top: 0;
@@ -76,7 +74,6 @@
         color: var(--accent);
       }
 
-      /* --- HERO SECTION --- */
       #home {
         height: 100vh;
         display: flex;
@@ -120,10 +117,9 @@
         background-color: var(--accent-hover);
       }
 
-      /* --- SECTIONS GENERAL --- */
       section {
         padding: 5rem 2rem;
-        max-width: 1400px; /* Wider for timeline */
+        max-width: 1400px;
         margin: 0 auto;
       }
 
@@ -139,7 +135,6 @@
         transform: translateX(-50%);
       }
 
-      /* --- CENTERED RAIL TIMELINE --- */
       .timeline-wrapper {
         position: relative;
         min-height: 850px;
@@ -149,7 +144,6 @@
         align-items: center;
       }
 
-      /* 1. Evidence Display (Top) - Floating Style */
       .timeline-display {
         width: 90%;
         max-width: 1000px;
@@ -165,29 +159,25 @@
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
         transition: opacity 0.2s ease;
         z-index: 2;
-        /* FIXED HEIGHT to prevent jumping */
         height: 550px;
       }
 
-      /* Layout for Content vs Media */
       .display-content-wrapper {
         display: grid;
-        grid-template-columns: 1fr 1.2fr; /* Standard layout: Media Left, Text Right */
+        grid-template-columns: 1fr 1.2fr;
         gap: 2rem;
         width: 100%;
-        height: 100%; /* Fill the fixed height container */
+        height: 100%;
       }
 
-      /* Special Grid for Double Images */
       .media-grid-double {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
-        height: 100%; /* Fill allocated space */
+        height: 100%;
         min-height: 300px;
       }
 
-      /* The Pointer Triangle */
       .timeline-display::after {
         content: "";
         position: absolute;
@@ -204,26 +194,25 @@
         background: #000;
         border-radius: 10px;
         overflow: hidden;
-        height: 100%; /* Fill container */
+        height: 100%;
         border: 1px solid #333;
-        cursor: pointer; /* Indicate clickable */
-        position: relative; /* For the click hint overlay */
+        cursor: pointer;
+        position: relative;
       }
 
       .timeline-media img,
       .timeline-media video {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Fill the box */
+        object-fit: cover;
         background: #000;
-        transition: transform 0.3s ease; /* Smooth zoom on hover */
+        transition: transform 0.3s ease;
       }
 
       .timeline-media:hover img {
-        transform: scale(1.03); /* Grow slightly on hover */
+        transform: scale(1.03);
       }
 
-      /* --- CLICK HINT OVERLAY --- */
       .click-hint {
         position: absolute;
         top: 50%;
@@ -234,7 +223,7 @@
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.8rem;
-        pointer-events: none; /* Let clicks pass through to image */
+        pointer-events: none;
         opacity: 0;
         transition: opacity 0.3s;
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -293,18 +282,15 @@
         color: black;
       }
 
-      /* 2. The Rail (Bottom/Center) */
       .timeline-nav-container {
         width: 100%;
         position: relative;
-        /* INCREASED: Padding top to prevent clipping of scaled nodes */
         padding-top: 30px;
         padding-bottom: 20px;
       }
 
       .timeline-line {
         position: absolute;
-        /* ADJUSTED: padding-top (30) + nav-padding (80) + half-dot (10) - half-line (2) = 118px */
         top: 118px;
         left: 0;
         width: 100%;
@@ -316,7 +302,6 @@
       .timeline-nav {
         display: flex;
         gap: 15vw;
-        /* INCREASED Top padding to 80px inside scroll area to stop clipping */
         padding: 80px calc(50% - 20px) 20px;
         overflow-x: auto;
         scroll-behavior: smooth;
@@ -361,7 +346,6 @@
         transition: opacity 0.3s;
       }
 
-      /* Active Node State */
       .timeline-node.active {
         opacity: 1;
       }
@@ -370,7 +354,7 @@
         background: var(--accent);
         border-color: #fff;
         box-shadow: 0 0 25px var(--accent);
-        transform: scale(1.4); /* Pop the DOT up */
+        transform: scale(1.4);
       }
 
       .timeline-node.active .node-label {
@@ -378,7 +362,6 @@
         opacity: 1;
       }
 
-      /* 3. Arrows Below Timeline */
       .arrow-controls {
         display: flex;
         justify-content: center;
@@ -413,7 +396,6 @@
         transform: scale(1.1);
       }
 
-      /* --- MODAL (IMAGE POPUP) --- */
       .modal-overlay {
         position: fixed;
         top: 0;
@@ -451,7 +433,6 @@
         color: var(--accent);
       }
 
-      /* --- REFLECTIONS (TABS) --- */
       .tabs {
         display: flex;
         justify-content: center;
@@ -495,7 +476,6 @@
         color: var(--accent);
       }
 
-      /* --- CONTRACT & FOOTER --- */
       .contract-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -517,10 +497,9 @@
         margin-top: 4rem;
       }
 
-      /* --- RESPONSIVE --- */
       @media (max-width: 768px) {
         .timeline-display {
-          height: auto; /* Allow auto height on mobile */
+          height: auto;
         }
         .display-content-wrapper {
           grid-template-columns: 1fr;
@@ -557,13 +536,11 @@
     </style>
   </head>
   <body>
-    <!-- IMAGE MODAL -->
     <div id="image-modal" class="modal-overlay" onclick="closeModal()">
       <button class="close-modal">&times;</button>
       <img id="modal-img" class="modal-content" src="" alt="Full View" />
     </div>
 
-    <!-- NAVIGATION -->
     <nav>
       <div class="logo">Ahnaf Sufi</div>
       <div class="nav-links">
@@ -574,7 +551,6 @@
       </div>
     </nav>
 
-    <!-- HERO SECTION -->
     <section id="home">
       <h1 class="hero-title">Flap, Die, Retry</h1>
       <p class="hero-subtitle">
@@ -584,27 +560,20 @@
       <a href="#timeline" class="btn">View Evidence</a>
     </section>
 
-    <!-- TIMELINE SECTION (Evidence of Learning) -->
     <section id="timeline">
       <h2 class="section-title">Development Log (Evidence)</h2>
 
       <div class="timeline-wrapper">
-        <!-- 1. The Evidence Card (Centered Top) -->
         <div class="timeline-display" id="display-area">
-          <!-- Content injected via JS -->
         </div>
 
-        <!-- 2. The Rail (Centered Bottom) -->
         <div class="timeline-nav-container">
           <div class="timeline-line"></div>
 
-          <!-- Scrollable Nodes -->
           <div class="timeline-nav" id="timeline-nav">
-            <!-- Nodes injected via JS -->
           </div>
         </div>
 
-        <!-- 3. Arrows (Subtle & Below) -->
         <div class="arrow-controls">
           <button class="arrow-btn" onclick="prevSlide()">&#10094;</button>
           <button class="arrow-btn" onclick="nextSlide()">&#10095;</button>
@@ -612,7 +581,6 @@
       </div>
     </section>
 
-    <!-- REFLECTION SECTION (PPMR) -->
     <section id="reflection">
       <h2 class="section-title">Project Reflections (PPMR)</h2>
 
@@ -696,7 +664,6 @@
       </div>
     </section>
 
-    <!-- CONTRACT & RESOURCES -->
     <section id="contract">
       <h2 class="section-title">Contract & Resources</h2>
       <div class="contract-grid">
@@ -764,7 +731,6 @@
     </footer>
 
     <script>
-      // --- TIMELINE DATA (UPDATED WITH YOUR IMAGES) ---
       const timelineData = [
         {
           id: 1,
@@ -861,14 +827,14 @@
         },
       ];
 
-      // --- TIMELINE LOGIC ---
+      //timeline logic
       let currentIndex = 0;
       let isAutoScrolling = false;
       const displayArea = document.getElementById("display-area");
       const navContainer = document.getElementById("timeline-nav");
 
       function renderTimeline() {
-        // Render Nav Nodes
+        // render nav nodes
         navContainer.innerHTML = timelineData
           .map(
             (item, index) => `
@@ -882,21 +848,20 @@
           )
           .join("");
 
-        // Load first item content
+        // load first item content
         updateContent(0);
       }
 
-      // Triggered by CLICK (Manual Selection)
+      // triggered by click
       function clickNode(index) {
         isAutoScrolling = true;
         currentIndex = index;
 
-        // 1. Update Content
+        // update content
         updateContent(index);
 
-        // 2. Scroll Rail to Center
+        // scroll rail to center
         const node = document.getElementById(`node-${index}`);
-        // Simplified math for centering
         const scrollPosition =
           node.offsetLeft - navContainer.clientWidth / 2 + node.clientWidth / 2;
 
@@ -905,13 +870,13 @@
           behavior: "smooth",
         });
 
-        // Reset flag after scroll finishes (approx 500ms)
+        // reset flag after scroll finishes (approx 500ms)
         setTimeout(() => {
           isAutoScrolling = false;
         }, 600);
       }
 
-      // Triggered by SCROLL (Auto Detection)
+      // triggered by scroll
       navContainer.addEventListener("scroll", () => {
         if (isAutoScrolling) return;
 
@@ -920,7 +885,7 @@
         let closestIndex = -1;
         let closestDist = Infinity;
 
-        // Find node closest to center
+        // find node closest to center
         timelineData.forEach((_, index) => {
           const node = document.getElementById(`node-${index}`);
           const nodeCenter = node.offsetLeft + node.clientWidth / 2;
@@ -932,26 +897,25 @@
           }
         });
 
-        // Update only if index changed and is "close enough" (snap feel)
+        // update only if index changed and is "close enough"
         if (closestIndex !== -1 && closestIndex !== currentIndex) {
           currentIndex = closestIndex;
           updateContent(currentIndex);
         }
       });
 
-      // Updates visuals (Classes + HTML)
+      // updates visuals
       function updateContent(index) {
         const data = timelineData[index];
 
-        // Highlight Node
+        // highlight Node
         const nodes = document.querySelectorAll(".timeline-node");
         nodes.forEach((node) => node.classList.remove("active"));
         if (nodes[index]) nodes[index].classList.add("active");
 
-        // --- MEDIA HTML GENERATION ---
         let mediaHtml = "";
 
-        // Use custom object-position if provided, default to center
+        // use custom object-position if provided, default to center
         const pos1 = data.imgPos || "center";
 
         if (data.img2) {
@@ -977,7 +941,7 @@
                 `;
         }
 
-        // Swap Display with content wrapper
+        // swap display with content wrapper
         displayArea.innerHTML = `
                 <div class="display-content-wrapper">
                     ${mediaHtml}
@@ -1003,7 +967,7 @@
         clickNode(newIndex);
       }
 
-      // --- TAB LOGIC ---
+      // tabs
       function openTab(tabName) {
         const contents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < contents.length; i++) {
@@ -1017,7 +981,7 @@
         event.currentTarget.classList.add("active");
       }
 
-      // --- MODAL LOGIC ---
+      // modals
       function openModal(imgSrc) {
         const modal = document.getElementById("image-modal");
         const modalImg = document.getElementById("modal-img");
@@ -1030,10 +994,11 @@
         modal.style.display = "none";
       }
 
-      // Initialize
+      // initialize
       renderTimeline();
     </script>
   </body>
 </html>
+
 
 
