@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flap, Die, Retry | Ahnaf Sufi Portfolio</title>
     <style>
+      /* --- CSS VARIABLES & RESET --- */
       :root {
         --bg-color: #121212;
         --card-bg: #1e1e1e;
         --text-main: #e0e0e0;
         --text-muted: #a0a0a0;
-        --accent: #00b894;
+        --accent: #00b894; /* Unity-ish Green */
         --accent-hover: #55efc4;
         --danger: #ff7675;
         --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -40,6 +41,7 @@
         list-style: none;
       }
 
+      /* --- NAVIGATION --- */
       nav {
         position: fixed;
         top: 0;
@@ -74,6 +76,7 @@
         color: var(--accent);
       }
 
+      /* --- HERO SECTION --- */
       #home {
         height: 100vh;
         display: flex;
@@ -83,7 +86,7 @@
         text-align: center;
         padding: 2rem;
         background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-          url("imgs/items.png");
+          url("imgs/wk9_gamestate.png");
         background-size: cover;
         background-position: center;
       }
@@ -117,9 +120,10 @@
         background-color: var(--accent-hover);
       }
 
+      /* --- SECTIONS GENERAL --- */
       section {
         padding: 5rem 2rem;
-        max-width: 1400px;
+        max-width: 1400px; /* Wider for timeline */
         margin: 0 auto;
       }
 
@@ -135,6 +139,7 @@
         transform: translateX(-50%);
       }
 
+      /* --- CENTERED RAIL TIMELINE --- */
       .timeline-wrapper {
         position: relative;
         min-height: 850px;
@@ -144,6 +149,7 @@
         align-items: center;
       }
 
+      /* 1. Evidence Display (Top) - Floating Style */
       .timeline-display {
         width: 90%;
         max-width: 1000px;
@@ -159,25 +165,29 @@
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
         transition: opacity 0.2s ease;
         z-index: 2;
+        /* FIXED HEIGHT to prevent jumping */
         height: 550px;
       }
 
+      /* Layout for Content vs Media */
       .display-content-wrapper {
         display: grid;
-        grid-template-columns: 1fr 1.2fr;
+        grid-template-columns: 1fr 1.2fr; /* Standard layout: Media Left, Text Right */
         gap: 2rem;
         width: 100%;
-        height: 100%;
+        height: 100%; /* Fill the fixed height container */
       }
 
+      /* Special Grid for Double Images */
       .media-grid-double {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
-        height: 100%;
+        height: 100%; /* Fill allocated space */
         min-height: 300px;
       }
 
+      /* The Pointer Triangle */
       .timeline-display::after {
         content: "";
         position: absolute;
@@ -194,25 +204,26 @@
         background: #000;
         border-radius: 10px;
         overflow: hidden;
-        height: 100%;
+        height: 100%; /* Fill container */
         border: 1px solid #333;
-        cursor: pointer;
-        position: relative;
+        cursor: pointer; /* Indicate clickable */
+        position: relative; /* For the click hint overlay */
       }
 
       .timeline-media img,
       .timeline-media video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: cover; /* Fill the box */
         background: #000;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease; /* Smooth zoom on hover */
       }
 
       .timeline-media:hover img {
-        transform: scale(1.03);
+        transform: scale(1.03); /* Grow slightly on hover */
       }
 
+      /* --- CLICK HINT OVERLAY --- */
       .click-hint {
         position: absolute;
         top: 50%;
@@ -223,7 +234,7 @@
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.8rem;
-        pointer-events: none;
+        pointer-events: none; /* Let clicks pass through to image */
         opacity: 0;
         transition: opacity 0.3s;
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -282,15 +293,18 @@
         color: black;
       }
 
+      /* 2. The Rail (Bottom/Center) */
       .timeline-nav-container {
         width: 100%;
         position: relative;
+        /* INCREASED: Padding top to prevent clipping of scaled nodes */
         padding-top: 30px;
         padding-bottom: 20px;
       }
 
       .timeline-line {
         position: absolute;
+        /* ADJUSTED: padding-top (30) + nav-padding (80) + half-dot (10) - half-line (2) = 118px */
         top: 118px;
         left: 0;
         width: 100%;
@@ -302,6 +316,7 @@
       .timeline-nav {
         display: flex;
         gap: 15vw;
+        /* INCREASED Top padding to 80px inside scroll area to stop clipping */
         padding: 80px calc(50% - 20px) 20px;
         overflow-x: auto;
         scroll-behavior: smooth;
@@ -346,6 +361,7 @@
         transition: opacity 0.3s;
       }
 
+      /* Active Node State */
       .timeline-node.active {
         opacity: 1;
       }
@@ -354,7 +370,7 @@
         background: var(--accent);
         border-color: #fff;
         box-shadow: 0 0 25px var(--accent);
-        transform: scale(1.4);
+        transform: scale(1.4); /* Pop the DOT up */
       }
 
       .timeline-node.active .node-label {
@@ -362,6 +378,7 @@
         opacity: 1;
       }
 
+      /* 3. Arrows Below Timeline */
       .arrow-controls {
         display: flex;
         justify-content: center;
@@ -396,6 +413,18 @@
         transform: scale(1.1);
       }
 
+      /* --- VIDEO CARD STYLES --- */
+      .video-card {
+        background: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid #333;
+      }
+      .video-card.highlight {
+        border-color: var(--accent);
+      }
+
+      /* --- MODAL (IMAGE POPUP) --- */
       .modal-overlay {
         position: fixed;
         top: 0;
@@ -433,6 +462,7 @@
         color: var(--accent);
       }
 
+      /* --- REFLECTIONS (TABS) --- */
       .tabs {
         display: flex;
         justify-content: center;
@@ -476,6 +506,7 @@
         color: var(--accent);
       }
 
+      /* --- CONTRACT & FOOTER --- */
       .contract-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -497,9 +528,10 @@
         margin-top: 4rem;
       }
 
+      /* --- RESPONSIVE --- */
       @media (max-width: 768px) {
         .timeline-display {
-          height: auto;
+            height: auto; /* Allow auto height on mobile */
         }
         .display-content-wrapper {
           grid-template-columns: 1fr;
@@ -536,44 +568,55 @@
     </style>
   </head>
   <body>
+    <!-- IMAGE MODAL -->
     <div id="image-modal" class="modal-overlay" onclick="closeModal()">
       <button class="close-modal">&times;</button>
       <img id="modal-img" class="modal-content" src="" alt="Full View" />
     </div>
 
+    <!-- NAVIGATION -->
     <nav>
-      <div class="logo">Ahnaf Sufi</div>
+      <div class="logo">Ahnaf.Dev</div>
       <div class="nav-links">
         <a href="#home">Home</a>
         <a href="#timeline">Evidence Log</a>
+        <a href="#play-compare">Play</a>
         <a href="#reflection">Reflections</a>
         <a href="#contract">Contract</a>
       </div>
     </nav>
 
+    <!-- HERO SECTION -->
     <section id="home">
       <h1 class="hero-title">Flap, Die, Retry</h1>
       <p class="hero-subtitle">
-        A journey into Game Development with Unity & C#.<br />By Ahnaf Sufi
-        Putera Suratman (2401541D)
+        A journey into Arcade Game Development with Unity & C#.<br />By Ahnaf
+        Sufi Putera Suratman (2401541D)
       </p>
       <a href="#timeline" class="btn">View Evidence</a>
     </section>
 
+    <!-- TIMELINE SECTION (Evidence of Learning) -->
     <section id="timeline">
       <h2 class="section-title">Development Log (Evidence)</h2>
 
       <div class="timeline-wrapper">
+        <!-- 1. The Evidence Card (Centered Top) -->
         <div class="timeline-display" id="display-area">
+          <!-- Content injected via JS -->
         </div>
 
+        <!-- 2. The Rail (Centered Bottom) -->
         <div class="timeline-nav-container">
           <div class="timeline-line"></div>
 
+          <!-- Scrollable Nodes -->
           <div class="timeline-nav" id="timeline-nav">
+            <!-- Nodes injected via JS -->
           </div>
         </div>
 
+        <!-- 3. Arrows (Subtle & Below) -->
         <div class="arrow-controls">
           <button class="arrow-btn" onclick="prevSlide()">&#10094;</button>
           <button class="arrow-btn" onclick="nextSlide()">&#10095;</button>
@@ -581,39 +624,47 @@
       </div>
     </section>
 
-        <section id="play-compare">
+    <!-- NEW: PLAY & COMPARE SECTION (Moved after Timeline) -->
+    <section id="play-compare">
         <h2 class="section-title">Play & Compare</h2>
         
+        <!-- Video Comparison Grid -->
         <div class="display-content-wrapper" style="margin-bottom: 3rem;">
           
+          <!-- Video 1: Tutorial -->
           <div class="video-card">
             <h3 style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 1rem; text-align: center;">The Starting Point (Tutorial)</h3>
             <div class="timeline-media" style="height: 250px;">
-              <video controls src="old.mp4"></video>
+              <!-- Replace 'video_tutorial.mp4' with your actual file -->
+              <video controls src="imgs/video_tutorial.mp4"></video>
             </div>
             <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
-              Basic mechanics following standard tutorials. Simple movement, no progression.
+              Basic mechanics following standard tutorials. Simple movement, one pipe type, no progression.
             </p>
           </div>
   
+          <!-- Video 2: Final Build -->
           <div class="video-card highlight">
             <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 1rem; text-align: center;">The Final Evolution</h3>
             <div class="timeline-media" style="height: 250px;">
-              <video controls src="new.mp4"></video>
+              <!-- Replace 'video_final.mp4' with your actual file -->
+              <video controls src="imgs/video_final.mp4"></video>
             </div>
             <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
-              Randomized Shops, Dynamic Difficulty, Stat Variables, and a 3-Heart Health System.
+              Full Arcade Logic: Randomized Shops, Dynamic Difficulty, Stat Variables, and a 3-Heart Health System.
             </p>
           </div>
   
         </div>
-          
+  
+        <!-- Download / Play Area -->
         <div style="text-align: center; background: var(--card-bg); padding: 3rem; border-radius: 15px; border: 1px solid #333;">
           <h3 style="font-size: 2rem; margin-bottom: 1rem; color: #fff;">Experience the Game</h3>
           <p style="margin-bottom: 2rem; color: var(--text-muted); max-width: 600px; margin-left: auto; margin-right: auto;">
             Download the latest build to test the random shop logic and difficulty scaling yourself.
           </p>
           
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
             <a href="https://drive.google.com/file/d/1YKuYd_WipEtF2z-T0PsjJb0RDI3OQB11/view?usp=drive_link" download class="btn" style="background: transparent; border: 2px solid var(--accent); color: var(--text-main); display: inline-flex; align-items: center; gap: 0.5rem;">
               <span>⬇️</span> Download Windows Build (.zip)
             </a>
@@ -622,6 +673,7 @@
   
       </section>
 
+    <!-- REFLECTION SECTION (PPMR) -->
     <section id="reflection">
       <h2 class="section-title">Project Reflections (PPMR)</h2>
 
@@ -640,33 +692,18 @@
         </p>
         <br />
         <p>
-          Initially, I rated my <strong>Innovation</strong> attribute at a 2. I
-          didn't know where to start, so when my facilitator mentioned Flappy
-          Bird, I decided to follow a basic tutorial to build a foundation.
-          However, I realized my art skills were limited, so I had a choice:
-          make a bad-looking original game or stick to the tutorial's aesthetic
-          but innovate on gameplay. I chose the latter, pivoting to an "Arcade
-          Evolution" concept (randomized rounds, shops) to make the game
-          replayable and unique every time.
+          Initially, I rated my <strong>Innovation</strong> attribute at a 2. I didn't know where to start, so when my facilitator mentioned Flappy Bird, I decided to follow a basic tutorial to build a foundation. However, I realized my art skills were limited, so I had a choice: make a bad-looking original game or stick to the tutorial's aesthetic but innovate on gameplay. I chose the latter, pivoting to an "Arcade Evolution" concept (randomized rounds, shops) to make the game replayable and unique every time.
         </p>
       </div>
 
       <div id="perform" class="tab-content">
         <h3 class="ppmr-header">PERFORM: The Struggle</h3>
         <p>
-          <strong>Challenge:</strong> Re-architecting a simple tutorial into a
-          complex system.
+          <strong>Challenge:</strong> Re-architecting a simple tutorial into a complex system.
         </p>
         <br />
         <p>
-          Building on top of the existing tutorial code was harder than
-          expected. The basic code just "paused" the game, which wasn't enough
-          for a Shop system. I realized I couldn't just patch it; I had to
-          <strong>recreate the structure</strong> entirely to accommodate Game
-          States (Playing, Shop, GameOver) and variable Stats (Speed, Gap Size).
-          This forced me to leverage my
-          <strong>Critical Thinking</strong> attribute to decouple the logic and
-          make it scalable.
+          Building on top of the existing tutorial code was harder than expected. The basic code just "paused" the game, which wasn't enough for a Shop system. I realized I couldn't just patch it; I had to <strong>recreate the structure</strong> entirely to accommodate Game States (Playing, Shop, GameOver) and variable Stats (Speed, Gap Size). This forced me to leverage my <strong>Critical Thinking</strong> attribute to decouple the logic and make it scalable.
         </p>
       </div>
 
@@ -678,15 +715,10 @@
         </p>
         <br />
         <p>
-          I monitored my progress by showing a beta build to Ashveen. He pointed
-          out that the game ramped up too fast—the randomized difficulty scaling
-          made it unfairly difficult by Round 3.
+          I monitored my progress by showing a beta build to Ashveen. He pointed out that the game ramped up too fast—the randomized difficulty scaling made it unfairly difficult by Round 3.
         </p>
         <p>
-          <strong>Action Taken:</strong> I implemented a
-          <strong>Heart System</strong> (3 lives) to make it more forgiving and
-          used my <strong>StatDisplay</strong> debug tool to fine-tune the
-          difficulty multiplier from 1.5x to 1.1x per round.
+          <strong>Action Taken:</strong> I implemented a <strong>Heart System</strong> (3 lives) to make it more forgiving and used my <strong>StatDisplay</strong> debug tool to fine-tune the difficulty multiplier from 1.5x to 1.1x per round.
         </p>
       </div>
 
@@ -695,31 +727,25 @@
         <p><strong>Outcome:</strong> Critical Thinking 4 &rarr; 5.</p>
         <br />
         <p>
-          Looking back, the pivot was the most valuable part of the journey. By
-          choosing to "innovate" on mechanics rather than art, I learned far
-          more about Game Architecture than I would have with a simple clone. I
-          successfully moved from "copying a tutorial" to "engineering a
-          system," satisfying my goal to deepen my technical understanding of
-          game development.
+          Looking back, the pivot was the most valuable part of the journey. By choosing to "innovate" on mechanics rather than art, I learned far more about Game Architecture than I would have with a simple clone. I successfully moved from "copying a tutorial" to "engineering a system," satisfying my goal to deepen my technical understanding of game development.
         </p>
       </div>
     </section>
 
+    <!-- CONTRACT & RESOURCES -->
     <section id="contract">
       <h2 class="section-title">Contract & Resources</h2>
       <div class="contract-grid">
         <div class="card">
           <h3>My Learning Contract</h3>
-          <p>
-            <strong>Goal:</strong> Develop Arcade-Style Flappy Bird Evolution.
-          </p>
+          <p><strong>Goal:</strong> Develop Arcade-Style Flappy Bird Evolution.</p>
           <p>
             <strong>Attributes:</strong> Inquisitive, Critical Thinking,
             Innovative.
           </p>
           <br />
           <a
-            href="2401541D_Ahnaf_Sufi_Learning_Contract.pdf"
+            href="2401541D_Ahnaf_Sufi_Learning_Contract.docx"
             class="btn"
             style="font-size: 0.8rem"
             target="_blank"
@@ -737,30 +763,9 @@
             "
           >
             <li>Unity Official Documentation (Scripting API)</li>
-            <li>
-              <a
-                href="https://www.youtube.com/watch?v=ihvBiJ1oC9U"
-                target="_blank"
-                style="text-decoration: underline; color: var(--accent)"
-                >Zigurous: How to make Flappy Bird in Unity</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://www.youtube.com/watch?v=XtQMytORBmM"
-                target="_blank"
-                style="text-decoration: underline; color: var(--accent)"
-                >GMTK: The Unity Tutorial For Complete Beginners</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://www.youtube.com/watch?v=7jxS8HIny3Q"
-                target="_blank"
-                style="text-decoration: underline; color: var(--accent)"
-                >Code Monkey: Scriptable Objects Guide</a
-              >
-            </li>
+            <li><a href="https://www.youtube.com/watch?v=ihvBiJ1oC9U" target="_blank" style="text-decoration: underline; color: var(--accent);">Zigurous: How to make Flappy Bird in Unity</a></li>
+            <li><a href="https://www.youtube.com/watch?v=XtQMytORBmM" target="_blank" style="text-decoration: underline; color: var(--accent);">GMTK: The Unity Tutorial For Complete Beginners</a></li>
+            <li><a href="https://www.youtube.com/watch?v=7jxS8HIny3Q" target="_blank" style="text-decoration: underline; color: var(--accent);">Code Monkey: Scriptable Objects Guide</a></li>
             <li>Peer Consultation: Ashveen Dev Menon</li>
           </ul>
         </div>
@@ -768,114 +773,167 @@
     </section>
 
     <footer>
+      <p>&copy; 2025 Ahnaf Sufi Putera Suratman. Admin No: 2401541D.</p>
       <p>GTP1302 Guided Learning Project.</p>
     </footer>
 
     <script>
+      // --- TIMELINE DATA (UPDATED WITH YOUR DIARY LOGS) ---
       const timelineData = [
         {
           id: 1,
-          date: "Week 1-2",
-          title: "Project Inception",
+          date: "Week 1 (Part 1)",
+          title: "Getting Started",
           tag: "Planning",
           tagClass: "tag-monitor",
           desc: `
-                    <strong>The Starting Point:</strong> I initially felt overwhelmed and unsure where to start, so I decided to follow a standard "Flappy Bird" tutorial to build a foundation.<br><br>
-                    <strong>The Pivot:</strong> While the tutorial was helpful, I realized a simple clone wouldn't satisfy my <em>Innovation</em> goal (Rated 2/5). I pivoted to an "Arcade Evolution" concept with randomized progression and upgrades, knowing this would require eventually rewriting the core architecture.
+                    <strong>The Beginning:</strong> I spent the first week simply familiarizing myself with the Unity Interface, understanding the Scene view, Game view, and basic UI elements. I felt a bit overwhelmed by the complexity of the engine.
                 `,
-          img: "imgs/wk1.png",
+          img: "imgs/image_bd77e0.png",
           imgPos: "center",
         },
         {
           id: 2,
+          date: "Week 1 (Part 2)",
+          title: "The Choice",
+          tag: "Planning",
+          tagClass: "tag-monitor",
+          desc: `
+                    <strong>The Decision:</strong> I didn't know what type of game to start with, but I thought 2D would be easier. I remembered the teacher mentioning "Flappy Bird" and saw an Instagram post about a beginner dev making one. <br><br>
+                    <strong>Action:</strong> I decided to follow a simple Flappy Bird tutorial just to start somewhere, even though I wasn't sure where it would lead.
+                `,
+          img: "imgs/wk3_unity.png", // Using this as placeholder for early unity
+          imgPos: "center",
+        },
+        {
+          id: 3,
           date: "Week 3",
-          title: "Hello World (Unity)",
+          title: "Following Tutorials",
           tag: "Broadening",
           tagClass: "tag-broadening",
           desc: `
-                    <strong>First Steps:</strong> I started by familiarizing myself with the Unity Interface. My first script was a basic <code>Player.cs</code> that simply moved a sprite.<br><br>
-                    <strong>Evidence:</strong> I learned about the <code>Transform</code> component and how <code>Time.deltaTime</code> is crucial for frame-rate independent movement. This broadened my understanding of the Game Loop.
+                    <strong>Learning the Basics:</strong> I followed YouTube tutorials closely. The coding logic was somewhat similar to what I'm used to (Python/C++), but I had to learn Unity-specifics like how to move, turn, and scale sprites using the <code>Transform</code> component.
                 `,
           img: "imgs/wk3_unity.png",
           imgPos: "center",
         },
         {
-          id: 3,
+          id: 4,
           date: "Week 5",
-          title: "Physics & Parallax",
+          title: "Physics & Infinite Scroll",
           tag: "Broadening",
           tagClass: "tag-broadening",
           desc: `
-                    <strong>Mechanics:</strong> I implemented the core physics using <code>Rigidbody2D</code> and created the infinite scrolling effect based on the tutorial.<br><br>
-                    <strong>The Logic:</strong> My code snippet (Right) uses texture offset mapping rather than moving physical objects. This was a key optimization technique I learned to keep performance high on mobile devices.
+                    <strong>Implementation:</strong> I gave the bird a hitbox and made the background scroll. <br><br>
+                    <strong>The Logic:</strong> Following the tutorial, I learned that using <strong>Texture Offsets</strong> to move the image is much more optimal than moving the actual object, and it works perfectly for infinite scrolling.
                 `,
           img: "imgs/wk5_tutorial.png",
           img2: "imgs/wk5_code.png",
         },
         {
-          id: 4,
+          id: 5,
           date: "Week 7",
-          title: "The 'Fall' Bug",
+          title: "Tags & Bugs",
           tag: "Critical Thinking",
           tagClass: "tag-critical",
           desc: `
-                    <strong>The Failure:</strong> My player kept falling through the floor despite having a Collider.<br><br>
-                    <strong>The Fix:</strong> I used my <em>Critical Thinking</em> attribute to debug the Inspector. I realized I had set the Floor Collider to "Is Trigger", which ghosted the physics interactions. Correcting this to a solid collision taught me the vital difference between <code>OnCollisionEnter</code> and <code>OnTriggerEnter</code>.
+                    <strong>Tagging System:</strong> I learned about Tags (Pipe, Ground) to tell the script when a collision should trigger Game Over. <br><br>
+                    <strong>The Bug:</strong> I met a bug where the player could fly under the map. I realized this was caused by me forgetting to give the floor object the "Obstacle" tag. This taught me the importance of the Inspector settings.
                 `,
           img: "imgs/wk7_tag.png",
-          imgPos: "right", // Aligns to Right to show Inspector
-        },
-        {
-          id: 5,
-          date: "Week 9",
-          title: "Architecture Pivot",
-          tag: "Deepening",
-          tagClass: "tag-deepening",
-          desc: `
-                    <strong>The Limit of Tutorials:</strong> The basic tutorial simply paused the game with <code>Time.timeScale = 0</code>. This wasn't enough for my advanced features (Shops, Upgrades).<br><br>
-                    <strong>The Re-Write:</strong> I completely re-engineered the <code>GameManager</code>. I implemented a proper <strong>State Machine</strong> (Playing, Shop, GameOver) and exposed variables like Speed and Gap Size as modifiable stats, paving the way for the upgrade system.
-                `,
-          img: "imgs/wk9_gamestate.png",
-          img2: "imgs/wk9_gamestat.png",
+          imgPos: "right", 
         },
         {
           id: 6,
-          date: "Week 11",
-          title: "Shop & Item Logic",
-          tag: "Deepening",
-          tagClass: "tag-deepening",
+          date: "Week 9 (Part 1)",
+          title: "The Pivot",
+          tag: "Planning",
+          tagClass: "tag-monitor",
           desc: `
-                    <strong>Data-Driven Design:</strong> I implemented the Shop System using <strong>ScriptableObjects</strong>. This allows me to create new items (like "Speed Down" or "Gap Up") just by creating assets in the project folder, without writing new code for each item.<br><br>
-                    <strong>Evidence:</strong> The screenshot shows the <code>ShopItem</code> assets and the dynamic UI that populates based on what is available.
+                    <strong>Stuck:</strong> I finished the tutorial but didn't know where to go next. Since Flappy Bird has zero replayability, I talked to a friend who suggested adding arcade elements like power-ups to make it more interesting.<br><br>
+                    <strong>The Idea:</strong> Pivot from a clone to a "Roguelike Arcade" game with random elements.
                 `,
-          img: "imgs/items.png",
+          img: "imgs/wk9_gamestate.png", // Using game state image to show complexity
           imgPos: "center",
         },
         {
           id: 7,
+          date: "Week 9 (Part 2)",
+          title: "The Struggle",
+          tag: "Deepening",
+          tagClass: "tag-deepening",
+          desc: `
+                    <strong>Re-Coding:</strong> To achieve this, the tutorial code (hardcoded values) had to be changed. I had to "freestyle" and rewrite the main <code>GameManager</code>. <br><br>
+                    <strong>Difficulty:</strong> Trying new ideas was hard because I wasn't used to the syntax (e.g., C# Math) and didn't know which Object Classes to use. It was a steep learning curve moving away from the tutorial safety net.
+                `,
+          img: "imgs/wk9_gamestat.png",
+          imgPos: "left",
+        },
+        {
+          id: 8,
+          date: "Week 9 (Part 3)",
+          title: "Modular Design",
+          tag: "Deepening",
+          tagClass: "tag-deepening",
+          desc: `
+                    <strong>Modular Variables:</strong> I made speed, player size, and gaps into variables that could be changed dynamically. <br><br>
+                    <strong>Scriptable Objects:</strong> I learnt about Scriptable Objects (basically classes) that let me change variables from within the Unity Editor UI itself, making editing much easier than changing code every time.
+                `,
+          img: "imgs/wk9_gamestate.png", // Reusing for consistency or use another inspector shot
+          imgPos: "center",
+        },
+        {
+          id: 9,
+          date: "Week 11",
+          title: "Item Logic",
+          tag: "Deepening",
+          tagClass: "tag-deepening",
+          desc: `
+                    <strong>Power Ups:</strong> Added items using Scriptable Objects. I gave them images and stats they affect. <br><br>
+                    <strong>The Goal:</strong> Force the player to make trade-offs (e.g., more money vs easier level) to survive the increasing difficulty. This adds randomness and makes every run unique.
+                `,
+          img: "imgs/items.png",
+          imgPos: "center"
+        },
+        {
+          id: 10,
           date: "Week 12-13",
-          title: "Balancing & Feedback",
+          title: "Balancing & Polish",
           tag: "Refining",
           tagClass: "tag-monitor",
           desc: `
-                    <strong>Consultation:</strong> I consulted my peer, Ashveen, regarding the difficulty curve. He noted the game ramped up too fast.<br><br>
-                    <strong>Action:</strong> I implemented a <code>HeartDisplay</code> system (3 Lives) to make it more forgiving and used my <code>StatDisplay</code> debug tool (Right) to tune the difficulty multiplier from 1.5x to 1.1x per round based on real-time data.
+                    <strong>Issues:</strong> Sometimes pipes spawned off-screen or the game was too fast to react to. <br><br>
+                    <strong>Fixes:</strong> I gave the player <strong>3 Lives</strong> to help them out and added limits (clamping) to pipe gaps so they stay on screen. I also added a <strong>Stat Board</strong>. <br><br>
+                    <strong>Feedback:</strong> Friends said it was still too hard, so I lowered the difficulty increase rate and nerfed some power-ups.
                 `,
           img: "imgs/wk11_health.png",
-          imgPos: "left",
+          imgPos: "left", 
           img2: "imgs/stats.png",
           img2Pos: "left",
         },
+        {
+          id: 11,
+          date: "Week 13+ (Future)",
+          title: "Reflections",
+          tag: "Refining",
+          tagClass: "tag-monitor",
+          desc: `
+                    <strong>What was missed:</strong> There were things I was too scared to try or commit to, such as shooting enemies, a shield mechanic, boss fights, or character selection for base stats.<br><br>
+                    <strong>Conclusion:</strong> However, I am proud that I moved from a basic tutorial to a fully functional, modular system.
+                `,
+          img: "imgs/wk13_final_gameplay.png",
+          imgPos: "center",
+        },
       ];
 
-      //timeline logic
+      // --- TIMELINE LOGIC ---
       let currentIndex = 0;
       let isAutoScrolling = false;
       const displayArea = document.getElementById("display-area");
       const navContainer = document.getElementById("timeline-nav");
 
       function renderTimeline() {
-        // render nav nodes
+        // Render Nav Nodes
         navContainer.innerHTML = timelineData
           .map(
             (item, index) => `
@@ -889,20 +947,21 @@
           )
           .join("");
 
-        // load first item content
+        // Load first item content
         updateContent(0);
       }
 
-      // triggered by click
+      // Triggered by CLICK (Manual Selection)
       function clickNode(index) {
         isAutoScrolling = true;
         currentIndex = index;
 
-        // update content
+        // 1. Update Content
         updateContent(index);
 
-        // scroll rail to center
+        // 2. Scroll Rail to Center
         const node = document.getElementById(`node-${index}`);
+        // Simplified math for centering
         const scrollPosition =
           node.offsetLeft - navContainer.clientWidth / 2 + node.clientWidth / 2;
 
@@ -911,13 +970,13 @@
           behavior: "smooth",
         });
 
-        // reset flag after scroll finishes (approx 500ms)
+        // Reset flag after scroll finishes (approx 500ms)
         setTimeout(() => {
           isAutoScrolling = false;
         }, 600);
       }
 
-      // triggered by scroll
+      // Triggered by SCROLL (Auto Detection)
       navContainer.addEventListener("scroll", () => {
         if (isAutoScrolling) return;
 
@@ -926,7 +985,7 @@
         let closestIndex = -1;
         let closestDist = Infinity;
 
-        // find node closest to center
+        // Find node closest to center
         timelineData.forEach((_, index) => {
           const node = document.getElementById(`node-${index}`);
           const nodeCenter = node.offsetLeft + node.clientWidth / 2;
@@ -938,25 +997,26 @@
           }
         });
 
-        // update only if index changed and is "close enough"
+        // Update only if index changed and is "close enough" (snap feel)
         if (closestIndex !== -1 && closestIndex !== currentIndex) {
           currentIndex = closestIndex;
           updateContent(currentIndex);
         }
       });
 
-      // updates visuals
+      // Updates visuals (Classes + HTML)
       function updateContent(index) {
         const data = timelineData[index];
 
-        // highlight Node
+        // Highlight Node
         const nodes = document.querySelectorAll(".timeline-node");
         nodes.forEach((node) => node.classList.remove("active"));
         if (nodes[index]) nodes[index].classList.add("active");
 
+        // --- MEDIA HTML GENERATION ---
         let mediaHtml = "";
 
-        // use custom object-position if provided, default to center
+        // Use custom object-position if provided, default to center
         const pos1 = data.imgPos || "center";
 
         if (data.img2) {
@@ -982,7 +1042,7 @@
                 `;
         }
 
-        // swap display with content wrapper
+        // Swap Display with content wrapper
         displayArea.innerHTML = `
                 <div class="display-content-wrapper">
                     ${mediaHtml}
@@ -1008,7 +1068,7 @@
         clickNode(newIndex);
       }
 
-      // tabs
+      // --- TAB LOGIC ---
       function openTab(tabName) {
         const contents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < contents.length; i++) {
@@ -1022,7 +1082,7 @@
         event.currentTarget.classList.add("active");
       }
 
-      // modals
+      // --- MODAL LOGIC ---
       function openModal(imgSrc) {
         const modal = document.getElementById("image-modal");
         const modalImg = document.getElementById("modal-img");
@@ -1035,14 +1095,8 @@
         modal.style.display = "none";
       }
 
-      // initialize
+      // Initialize
       renderTimeline();
     </script>
   </body>
 </html>
-
-
-
-
-
-
